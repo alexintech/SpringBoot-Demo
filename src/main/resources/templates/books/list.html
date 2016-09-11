@@ -1,28 +1,34 @@
-<a href="/books/new" class="btn btn-primary">Add new book</a>
+<html layout:decorator="layout">
 
-<table class="table table-striped" id="books_list">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Action</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr data-th-each="book : ${books}">
-            <td class="title" data-th-text="${book.title}"></td>
+    <div layout:fragment="content">
+        <a href="/books/new" class="btn btn-primary">Add new book</a>
 
-            <td>
-                <a th:href="@{'/books/{id}/delete'(id=${book.id})}" class="delete" th:attr="name=${book.title}">
-                    <span class="fa-stack"><i class="glyphicon glyphicon-trash">Delete</i></span>
-                </a>
-            </td>
+        <table class="table table-striped" id="books_list">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Action</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-th-each="book : ${books}">
+                    <td class="title" data-th-text="${book.title}"></td>
 
-            <td>
-                <a th:href="@{'/books/{id}/edit'(id=${book.id})}" class="edit" th:attr="name=${book.title}">
-                    <span class="fa-stack"><i class="glyphicon glyphicon-edit">Edit</i></span>
-                </a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+                    <td>
+                        <a th:href="@{'/books/{id}/delete'(id=${book.id})}" class="delete" th:attr="name=${book.title}">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-trash">Delete</i></span>
+                        </a>
+                    </td>
+
+                    <td>
+                        <a th:href="@{'/books/{id}/edit'(id=${book.id})}" class="edit" th:attr="name=${book.title}">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-edit">Edit</i></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</html>
