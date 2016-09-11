@@ -15,6 +15,36 @@ import tech.alexin.sbdemo.repositories.BookRepository;
 @RequestMapping("/books")
 public class BookController {
 
+    private static class BookForm {
+        private long bookId;
+        private String title;
+        private String description;
+
+        public long getBookId() {
+            return bookId;
+        }
+
+        public void setBookId(long bookId) {
+            this.bookId = bookId;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
     @Autowired
     private BookRepository repository;
 
@@ -33,6 +63,22 @@ public class BookController {
     public ModelAndView create(@RequestParam("title") String title,
                          @RequestParam("description") String description) {
         repository.save(new Book(title, description));
+        return new ModelAndView("redirect:/books");
+    }
+
+    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    public String edit(@PathVariable long id, Model model) {
+        Book book = repository.findOne(id);
+        model.addAttribute("book", book);
+        return "books/edit";
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ModelAndView update(BookForm book) {
+        Book savedBook = repository.findOne(book.getBookId());
+        savedBook.setTitle(book.getTitle());
+        savedBook.setDescription(book.getDescription());
+        repository.save(savedBook);
         return new ModelAndView("redirect:/books");
     }
 
