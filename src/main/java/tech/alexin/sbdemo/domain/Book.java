@@ -21,6 +21,11 @@ public class Book {
         this.title = title;
     }
 
+    public Book(String title, String description) {
+        this(title);
+        this.description = description;
+    }
+
     public long getId() {
         return id;
     }
