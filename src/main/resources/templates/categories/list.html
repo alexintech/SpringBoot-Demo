@@ -1,0 +1,46 @@
+<html layout:decorator="layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <div layout:fragment="content">
+        <a href="category/form" th:href="@{'/category/new'}" class="btn btn-primary">Add new category</a>
+
+        <h2>Category List</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Action</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="category : ${categories}">
+                    <td class="id" th:text="${category.id}">1</td>
+                    <td class="title" th:text="${category.name}">Category Name</td>
+
+                    <td>
+                        <a href="#" th:href="@{'/category/{id}'(id=${category.id})}" class="view">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-eye-open"></i>
+                                View</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/category/edit/{id}'(id=${category.id})}" class="edit">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-edit"></i>
+                                Edit</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/category/delete/{id}'(id=${category.id})}" class="delete">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-trash"></i>
+                                Delete</span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</html>

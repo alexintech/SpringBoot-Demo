@@ -7,13 +7,17 @@ import javax.persistence.*;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false, length = 100)
     private String title;
 
     private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "book_category_id")
+    private BookCategory bookCategory;
 
     public Book() {
     }
@@ -25,6 +29,11 @@ public class Book {
     public Book(String title, String description) {
         this(title);
         this.description = description;
+    }
+
+    public Book(String title, BookCategory bookCategory) {
+        this.title = title;
+        this.bookCategory = bookCategory;
     }
 
     public long getId() {
@@ -49,5 +58,13 @@ public class Book {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BookCategory getBookCategory() {
+        return bookCategory;
+    }
+
+    public void setBookCategory(BookCategory bookCategory) {
+        this.bookCategory = bookCategory;
     }
 }
