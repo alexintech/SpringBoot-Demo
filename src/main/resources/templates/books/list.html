@@ -6,14 +6,16 @@
         <table class="table table-striped" id="books_list">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Title</th>
                     <th>Action</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr data-th-each="book : ${books}">
-                    <td class="title" data-th-text="${book.title}"></td>
+                <tr th:each="book : ${books}">
+                    <td class="id" th:text="${book.id}">1</td>
+                    <td class="title" th:text="${book.title}">Book Title</td>
 
                     <td>
                         <a th:href="@{'/books/{id}/delete'(id=${book.id})}" class="delete" th:attr="name=${book.title}">
