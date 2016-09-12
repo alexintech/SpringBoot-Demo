@@ -53,7 +53,7 @@ public class BookCategoryController {
             return "categories/form";
         }
         bookCategoryService.saveCategory(bookCategory);
-        return "redirect:/category/" + bookCategory.getId();
+        return "redirect:/category";
     }
 
     @GetMapping(value = "/delete/{id}")

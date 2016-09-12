@@ -1,0 +1,14 @@
+<html layout:decorator="layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <div layout:fragment="content">
+        <a href="books/list" th:href="@{'/books'}" class="btn btn-default">
+            <i class="glyphicon glyphicon-menu-left"></i>Back</a>
+
+        <h2 th:text="${book.title}">Book Title</h2>
+        <p th:text="'Category: ' + ${book.bookCategory}">Book category</p>
+        <p th:text="${book.description}">Small book description</p>
+
+    </div>
+
+</html>

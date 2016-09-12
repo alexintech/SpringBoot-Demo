@@ -3,88 +3,61 @@ package tech.alexin.sbdemo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import tech.alexin.sbdemo.domain.Book;
-import tech.alexin.sbdemo.repositories.BookRepository;
+import tech.alexin.sbdemo.services.BookService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
-    private static class BookForm {
-        private long bookId;
-        private String title;
-        private String description;
-
-        public long getBookId() {
-            return bookId;
-        }
-
-        public void setBookId(long bookId) {
-            this.bookId = bookId;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public void setDescription(String description) {
-            this.description = description;
-        }
-    }
+    private BookService bookService;
 
     @Autowired
-    private BookRepository repository;
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public String listBooks(Model model) {
-        model.addAttribute("books", repository.findAll());
+    @GetMapping(value = "")
+    public String list(Model model) {
+        model.addAttribute("books", bookService.listAllBooks());
         return "books/list";
     }
 
-    @RequestMapping(value = "/new", method = RequestMethod.GET)
-    public String newBook() {
-        return "books/new";
+    @GetMapping(value = "/{id}")
+    public String show(@PathVariable Long id, Model model) {
+        model.addAttribute("book", bookService.getBookById(id));
+        return "books/show";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ModelAndView create(@RequestParam("title") String title,
-                         @RequestParam("description") String description) {
-        repository.save(new Book(title, description));
-        return new ModelAndView("redirect:/books");
-    }
-
-    @RequestMapping(value = "/{id}/edit", method = RequestMethod.GET)
+    @GetMapping(value = "/edit/{id}")
     public String edit(@PathVariable long id, Model model) {
-        Book book = repository.findOne(id);
-        model.addAttribute("book", book);
-        return "books/edit";
+        model.addAttribute("book", bookService.getBookById(id));
+        return "books/form";
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ModelAndView update(BookForm book) {
-        Book savedBook = repository.findOne(book.getBookId());
-        savedBook.setTitle(book.getTitle());
-        savedBook.setDescription(book.getDescription());
-        repository.save(savedBook);
-        return new ModelAndView("redirect:/books");
+    @GetMapping(value = "/new")
+    public String create(Model model) {
+        model.addAttribute("book", new Book());
+        return "books/form";
     }
 
-    @RequestMapping(value = "/{id}/delete", method = RequestMethod.GET)
-    public ModelAndView delete(@PathVariable long id) {
-        repository.delete(id);
-        return new ModelAndView("redirect:/books");
+    @PostMapping(value = "")
+    public String save(@Valid @ModelAttribute("book") Book book,
+                       BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "books/form";
+        }
+        bookService.saveBook(book);
+        return "redirect:/books/" + book.getId();
+    }
+
+    @GetMapping(value = "/delete/{id}")
+    public String delete(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return "redirect:/books";
     }
 }

@@ -1,14 +1,18 @@
-<html layout:decorator="layout">
+<html layout:decorator="layout" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
     <div layout:fragment="content">
-        <a href="/books/new" class="btn btn-primary">Add new book</a>
+        <a href="books/form" th:href="@{'/books/new'}" class="btn btn-primary">Add new book</a>
 
+        <h2>Book List</h2>
         <table class="table table-striped" id="books_list">
             <thead>
                 <tr>
                     <th>Id</th>
                     <th>Title</th>
+                    <th>Category</th>
                     <th>Action</th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -16,16 +20,24 @@
                 <tr th:each="book : ${books}">
                     <td class="id" th:text="${book.id}">1</td>
                     <td class="title" th:text="${book.title}">Book Title</td>
+                    <td class="category" th:text="${book.bookCategory}">Book Category</td>
 
                     <td>
-                        <a th:href="@{'/books/{id}/delete'(id=${book.id})}" class="delete" th:attr="name=${book.title}">
-                            <span class="fa-stack"><i class="glyphicon glyphicon-trash">Delete</i></span>
+                        <a href="#" th:href="@{'/books/{id}'(id=${book.id})}" class="view">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-eye-open"></i>
+                                View</span>
                         </a>
                     </td>
-
                     <td>
-                        <a th:href="@{'/books/{id}/edit'(id=${book.id})}" class="edit" th:attr="name=${book.title}">
-                            <span class="fa-stack"><i class="glyphicon glyphicon-edit">Edit</i></span>
+                        <a th:href="@{'/books/edit/{id}'(id=${book.id})}" class="edit">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-edit"></i>
+                                Edit</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a th:href="@{'/books/delete/{id}'(id=${book.id})}" class="delete">
+                            <span class="fa-stack"><i class="glyphicon glyphicon-trash"></i>
+                                Delete</span>
                         </a>
                     </td>
                 </tr>

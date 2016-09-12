@@ -1,6 +1,8 @@
 package tech.alexin.sbdemo.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "books")
@@ -10,6 +12,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Size(min = 3, max = 100)
     @Column(nullable = false, length = 100)
     private String title;
 
