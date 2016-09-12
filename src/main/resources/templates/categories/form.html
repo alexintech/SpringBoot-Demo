@@ -6,9 +6,11 @@
             <i class="glyphicon glyphicon-menu-left"></i>Back</a>
 
         <form method="post" th:object="${category}" th:action="@{/category}">
-            <div class="form-group">
+            <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-error'">
                 <label class="control-label" for="title">Name</label>
                 <input type="text" id="title" class="form-control" th:field="*{name}"/>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="help-block">
+                    Incorrect name</span>
             </div>
             <input type="hidden" th:field="*{id}"/>
             <button type="submit" class="btn btn-primary">Submit</button>

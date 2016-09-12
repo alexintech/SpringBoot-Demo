@@ -3,12 +3,12 @@ package tech.alexin.sbdemo.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import tech.alexin.sbdemo.domain.BookCategory;
 import tech.alexin.sbdemo.services.BookCategoryService;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/category")
@@ -46,7 +46,12 @@ public class BookCategoryController {
     }
 
     @PostMapping(value = "")
-    public String save(BookCategory bookCategory) {
+    public String save(@Valid @ModelAttribute("category") BookCategory bookCategory,
+                       BindingResult bindingResult,
+                       Model model) {
+        if (bindingResult.hasErrors()) {
+            return "categories/form";
+        }
         bookCategoryService.saveCategory(bookCategory);
         return "redirect:/category/" + bookCategory.getId();
     }

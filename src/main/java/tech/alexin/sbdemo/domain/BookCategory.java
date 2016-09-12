@@ -1,6 +1,8 @@
 package tech.alexin.sbdemo.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -11,6 +13,8 @@ public class BookCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
+    @Size(min = 3, max = 100)
     @Column(nullable = false, length = 100)
     private String name;
 
