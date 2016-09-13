@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import tech.alexin.sbdemo.domain.Book;
+import tech.alexin.sbdemo.services.BookCategoryService;
 import tech.alexin.sbdemo.services.BookService;
 
 import javax.validation.Valid;
@@ -15,6 +16,8 @@ import javax.validation.Valid;
 public class BookController {
 
     private BookService bookService;
+    @Autowired
+    private BookCategoryService bookCategoryService;
 
     @Autowired
     public void setBookService(BookService bookService) {
@@ -36,12 +39,14 @@ public class BookController {
     @GetMapping(value = "/edit/{id}")
     public String edit(@PathVariable long id, Model model) {
         model.addAttribute("book", bookService.getBookById(id));
+        model.addAttribute("categories", bookCategoryService.listAllCategories());
         return "books/form";
     }
 
     @GetMapping(value = "/new")
     public String create(Model model) {
         model.addAttribute("book", new Book());
+        model.addAttribute("categories", bookCategoryService.listAllCategories());
         return "books/form";
     }
 
